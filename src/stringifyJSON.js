@@ -7,8 +7,8 @@ var stringifyJSON = function(obj) {
 	var objType = getType(obj);
 	if (objType === "Null") { //special handling for null objects
 		return 'null';
-	} else if (objType === "Undefined") { //special handling for undefined values
-		return;
+	} else if (objType === "Undefined" || objType === "Function") { //special handling for undefined or function values
+		return undefined;
 	} else if (objType === "Number" || objType === "Boolean") {
 		return obj.toString();
 	} else if (objType === "String") { //strings must be quoted
@@ -37,7 +37,6 @@ var stringifyJSON = function(obj) {
 		objectJSON += "}";
 		return objectJSON;
 	}
-
 };
 
 var getType = function(obj) {
