@@ -23,6 +23,19 @@ var stringifyJSON = function(obj) {
 		}
 		arrayJSON += "]";
 		return arrayJSON;
+	} else if (objType = "Object") {
+		var objectJSON = "{";
+		_.each(obj, function (value, key){
+			var valJSON = stringifyJSON(value);
+			if (valJSON) {
+				objectJSON += stringifyJSON(key) + ":" + valJSON + ",";
+			}
+		});
+		if (objectJSON.charAt(objectJSON.length - 1) === ",") { //trim trailing comma
+			objectJSON = objectJSON.slice(0, -1);
+		}
+		objectJSON += "}";
+		return objectJSON;
 	}
 
 };
