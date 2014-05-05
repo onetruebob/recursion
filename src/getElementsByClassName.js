@@ -7,6 +7,27 @@
 var getElementsByClassName = function(className){
   // your code here
   var returnElements = [];
+  var elementNode = null;
+
+  if (this !== window) {
+  	elementNode = this;
+  } else {	
+  	elementNode = document.body;
+  }
+
+  if (hasClassName(elementNode, className)) {
+  	returnElements.push(elementNode);
+  }
+
+  if (elementNode.childNodes.length >= 1) {
+  	_.each(elementNode.childNodes, function (element) {
+  		if (element.classList) { //Only care if this is a node that can have classes
+  			returnElements.push(getElementsByClassName.call(element, className));
+  		}
+  	});
+  }
+
+  return _.flatten(returnElements);
 };
 
 var hasClassName = function (element, name) {
@@ -19,7 +40,6 @@ var hasClassName = function (element, name) {
 
 		for(var i = 0; i < classes.length && !nameMatch; i++) {
 			if (classes[i] === name) {nameMatch = true};
-			console.dir(classes[i]);
 		}
 
 		return nameMatch;
