@@ -45,7 +45,7 @@ var parseNum = function(json) {
 
 var splitValues = function(json) {
 	var values = [];
-	startIdx = 0;
+	var startIdx = 0;
 	var state = 'collecting';
 	var balanceCount = 0;
 	var currChar;
