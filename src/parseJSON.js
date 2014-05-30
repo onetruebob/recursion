@@ -6,14 +6,14 @@ var parseJSON = function(json) {
 	var returnObj, testChar, nextChar;
 
 	json = json.trim();
-	testChar = json.CharAt(0);
-	nextChar = json.CharAt(1);
+	testChar = json.charAt(0);
+	nextChar = json.charAt(1);
 
-	if (testChar = '{') {
+	if (testChar == '{') {
 		returnObj = parseObject(json);
-	} else if (testChar = '[') {
+	} else if (testChar == '[') {
 		returnObj = parseArray(json);
-	} else if (testChar = '"' || testChar = "'") {
+	} else if (testChar == '"' || testChar == "'") {
 		returnObj = parseString(json);
 	} else {
 		returnObj = parseNum(json);
@@ -35,5 +35,5 @@ var parseString = function(json) {
 };
 
 var parseNum = function(json) {
-
+	return Number(json);
 };
