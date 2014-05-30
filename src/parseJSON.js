@@ -32,6 +32,10 @@ var parseArray = function(json) {
 	var returnObj = [];
 	var arrayComponents = splitValues(stripContainerChars(json, '{', '}'));
 
+	for (var i = 0; i < arrayComponents.length; i++) {
+		returnObj.push(parseJSON(arrayComponents[i]);
+	};
+
 	return returnObj;
 };
 
