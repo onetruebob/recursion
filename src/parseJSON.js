@@ -45,7 +45,7 @@ var parseArray = function(json) {
 };
 
 var parseString = function(json) {
-
+	return stripContainerChars(json, '"', '"');
 };
 
 var parseBoolean = function (json) {
