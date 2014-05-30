@@ -29,13 +29,19 @@ var parseJSON = function(json) {
 
 var parseObject = function(json) {
 	var returnObj = {};
+	var objectProperties = splitValues(stripContainerChars(json, '{', '}'));
+
+	for (var i = 0; i < objectProperties.length; i++) {
+		var propertComponents = splitObjComponents(objectProperties[i]);
+	};
+
 
 	return returnObj;
 };
 
 var parseArray = function(json) {
 	var returnObj = [];
-	var arrayComponents = splitValues(stripContainerChars(json, '{', '}'));
+	var arrayComponents = splitValues(stripContainerChars(json, '[', ']'));
 
 	for (var i = 0; i < arrayComponents.length; i++) {
 		returnObj.push(parseJSON(arrayComponents[i]));
@@ -131,3 +137,30 @@ var stripContainerChars = function (json, initial, final) {
 	}
 	// Otherwise through syntax error
 };
+
+var splitObjComponents = function(json) {
+	var components = {};
+	var startIdx = 0;
+	var state = 'getting key';
+	var currChar;
+
+	for (var i = 0; i < json.length; i++) {
+		currChar = json.charAt(i);
+		if (state == 'getting key') {
+			if (currChar == ':') {
+				components.key = json.substr(startIdx, i - startIdx);
+				startIdx = i + 1;
+				components.value = json.substr(startIdx, json.length - i);
+				break;
+			} else if (currChar == '"') {
+				state = 'in string';
+			}
+		} else if (state == 'in string') {
+			if (currChar == '"' && json.charAt(i - 1) != '\\') {
+				state = 'getting key';
+			}
+		}
+	};
+
+	return components;
+}
