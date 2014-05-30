@@ -29,7 +29,10 @@ var parseObject = function(json) {
 };
 
 var parseArray = function(json) {
+	var returnObj = [];
+	var arrayComponents = splitValues(stripContainerChars(json, '{', '}'));
 
+	return returnObj;
 };
 
 var parseString = function(json) {
@@ -90,4 +93,14 @@ var splitValues = function(json) {
 	};
 
 	return values;
+};
+
+var stripContainerChars = function (json, initial, final) {
+	var lastCharIdx = json.length - 1;
+	var firstChar = json.charAt(0);
+	var lastChar = json.charAt(lastCharIdx);
+	if (firstChar == initial && lastChar == final) {
+		return json.substring(1, lastCharIdx)
+	}
+	// Otherwise through syntax error
 };
