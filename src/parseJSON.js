@@ -18,9 +18,9 @@ var parseJSON = function(json) {
 	} else if (testChar == 't' || testChar == "T" ||
 				testChar == 'f' || testChar == 'F') {
 		returnObj = parseBoolean(json);
-	} 
-
-	else {
+	} else if (testChar == 'n' || testChar == 'N') {
+		returnObj = parseNull(json);
+	} else {
 		returnObj = parseNum(json);
 	}
 
@@ -56,7 +56,15 @@ var parseBoolean = function (json) {
 		return false;
 	}
 	//Otherwise return a parsing error
-}
+};
+
+var parseNull = function (json) {
+	json = json.toLowerCase();
+	if (json == 'null') {
+		return null;
+	}
+	//Otherwise return a parsing error
+};
 
 var parseNum = function(json) {
 	return Number(json);
