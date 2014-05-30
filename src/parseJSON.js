@@ -15,7 +15,12 @@ var parseJSON = function(json) {
 		returnObj = parseArray(json);
 	} else if (testChar == '"' || testChar == "'") {
 		returnObj = parseString(json);
-	} else {
+	} else if (testChar == 't' || testChar == "T" ||
+				testChar == 'f' || testChar == 'F') {
+		returnObj = parseBoolean(json);
+	} 
+
+	else {
 		returnObj = parseNum(json);
 	}
 
@@ -33,7 +38,7 @@ var parseArray = function(json) {
 	var arrayComponents = splitValues(stripContainerChars(json, '{', '}'));
 
 	for (var i = 0; i < arrayComponents.length; i++) {
-		returnObj.push(parseJSON(arrayComponents[i]);
+		returnObj.push(parseJSON(arrayComponents[i]));
 	};
 
 	return returnObj;
@@ -42,6 +47,16 @@ var parseArray = function(json) {
 var parseString = function(json) {
 
 };
+
+var parseBoolean = function (json) {
+	json = json.toLowerCase();
+	if (json == 'true') {
+		return true;
+	} else if (json == 'false') {
+		return false;
+	}
+	//Otherwise return a parsing error
+}
 
 var parseNum = function(json) {
 	return Number(json);
