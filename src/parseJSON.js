@@ -32,7 +32,8 @@ var parseObject = function(json) {
 	var objectProperties = splitValues(stripContainerChars(json, '{', '}'));
 
 	for (var i = 0; i < objectProperties.length; i++) {
-		var propertComponents = splitObjComponents(objectProperties[i]);
+		var propComponents = splitObjComponents(objectProperties[i]);
+		returnObj[parseJSON(propComponents.key)] = parseJSON(propComponents.value);
 	};
 
 
@@ -51,7 +52,27 @@ var parseArray = function(json) {
 };
 
 var parseString = function(json) {
-	return stripContainerChars(json, '"', '"');
+	json = stripContainerChars(json, '"', '"');
+
+	return escapeString(json);
+};
+
+var escapeString = function (str) {
+	var escapedStr = '';
+
+	//strip escape chars from return val
+	for (var i = 0; i < str.length; i++) {
+		if(str.charAt(i) == '\\') {
+			if (i + 1 < str.length) {
+				escapedStr = escapedStr + str.charAt(i + 1);
+				i++;
+			}
+		} else {
+			escapedStr = escapedStr + str.charAt(i);
+		}
+	};
+
+	return escapedStr;
 };
 
 var parseBoolean = function (json) {
