@@ -150,13 +150,36 @@ var splitValues = function(json) {
 };
 
 var stripContainerChars = function (json, initial, final) {
-	var lastCharIdx = json.length - 1;
 	var firstChar = json.charAt(0);
-	var lastChar = json.charAt(lastCharIdx);
-	if (firstChar == initial && lastChar == final) {
-		return json.substring(1, lastCharIdx)
+	if (firstChar == initial && validateLastChar(json, final)) {
+		return json.substring(1, json.length - 1);
+	} else {
+		throw SyntaxError();
 	}
-	// Otherwise through syntax error
+};
+
+var validateLastChar = function (json, final) {
+	var state = 'searching';
+	var currChar = '';
+
+	for (var i = 0; i < json.length; i++) {
+		currChar = json.charAt(i);
+		if (state == 'searching') {
+			if (i == json.length - 1 && currChar == final) {
+				return true;
+			} else if (currChar == '"') {
+				state = 'in string';
+			}
+		} else if (state = 'in string') {
+			if (currChar == '"' && json.charAt(i - 1) != '\\') {
+				state = 'searching';
+			} else if (i == json.length - 1) {
+				return false;
+			}
+		}
+	};
+
+	return true;
 };
 
 var splitObjComponents = function(json) {
